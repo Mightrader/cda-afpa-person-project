@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: sparadrap.dao.ClientDaoTest
--------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.745 s -- in sparadrap.dao.ClientDaoTest
