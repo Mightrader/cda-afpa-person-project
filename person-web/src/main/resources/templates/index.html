@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des personnes</title>
+</head>
+<body>
+
+<h1>Liste des personnes</h1>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Prénom</th>
+        <th>Nom</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="p : ${persons}">
+        <td th:text="${p.id}"></td>
+        <td th:text="${p.firstname}"></td>
+        <td th:text="${p.lastname}"></td>
+        <td>
+            <a th:href="@{'/delete/' + ${p.id}}">Supprimer</a>
+        </td>
+    </tr>
+</table>
+
+<h2>Ajouter une personne</h2>
+
+<form th:action="@{/add}" method="post">
+    <label>Prénom :</label>
+    <input type="text" name="firstname" required />
+    <br/>
+
+    <label>Nom :</label>
+    <input type="text" name="lastname" required />
+    <br/>
+
+    <button type="submit">Ajouter</button>
+</form>
+
+</body>
+</html>
