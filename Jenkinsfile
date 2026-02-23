@@ -9,23 +9,26 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build API') {
             steps {
-                sh 'mvn -v'
-                sh 'mvn clean install -DskipTests'
+                dir('person-api') {
+                    sh 'mvn clean install -DskipTests'
+                }
             }
         }
 
-        stage('Test') {
+        stage('Build WEB') {
             steps {
-                sh 'mvn test'
+                dir('person-web') {
+                    sh 'mvn clean install -DskipTests'
+                }
             }
         }
 
         stage('Build Docker Images') {
             steps {
                 sh 'docker build -t person-api:1.0 ./person-api'
-                sh 'docker build -t person-web:1.0 ./person-web'
+                sh 'docker build -t person-web:1.0 -f person-web/Dockerfile .'
             }
         }
     }
