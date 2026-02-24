@@ -1,0 +1,11 @@
+FROM jenkins/jenkins:lts
+
+USER root
+
+# Installer Maven + Docker CLI
+RUN apt-get update && \
+    apt-get install -y maven docker.io && \
+    apt-get clean
+
+# IMPORTANT : rester en root
+USER root

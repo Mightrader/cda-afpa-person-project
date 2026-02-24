@@ -1,43 +1,56 @@
 services:
 
   mysql:
-    image: mysql:8.3
+    image: mysql:8
     container_name: person-mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: springboot_db
+      MYSQL_DATABASE: persondb
     ports:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
   api:
-    image: person-api:1.0
+    build:
+      context: ./person-api
     container_name: person-api
-    depends_on:
-      - mysql
+    restart: always
     ports:
       - "9000:9000"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/springboot_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/persondb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
-  web:
-    image: person-web:1.0
-    container_name: person-web
     depends_on:
-      - api
+      - mysql
+
+  web:
+    build:
+      context: ./person-web
+    container_name: person-web
+    restart: always
     ports:
       - "8080:8080"
+    environment:
+      API_URL: http://api:9000
+    depends_on:
+      - api
 
   jenkins:
-    image: jenkins/jenkins:lts
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
     container_name: person-jenkins
+    user: root
+    privileged: true
+    restart: always
     ports:
       - "8081:8080"
     volumes:
       - jenkins_data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   mysql_data:

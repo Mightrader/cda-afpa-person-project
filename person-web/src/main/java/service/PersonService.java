@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class PersonService {
 
-    private static final String API_URL = "http://localhost:9000/persons";
+    private final String API_URL = "http://api:9000/persons";;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -23,3 +23,4 @@ public class PersonService {
         restTemplate.delete(API_URL + "/" + id);
     }
 }
+
